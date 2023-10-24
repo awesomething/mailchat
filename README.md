@@ -1,9 +1,5 @@
 # OpenAI & LangChain chatbot with custom context knowledge base
 
-To learn how to use this repo watch [this tutorial video](https://youtu.be/AMc2A5Abj3M)
-
-This chatbot uses Pinecone index to retrieve relevant information from a custom knowledge base.
-Learn how to create a Pinecone index in [this tutorial](https://youtu.be/k1LrBOtNARk)
 
 Tech stack: LangChain, Pinecone, Typescript, Openai, Next.js, Tailwind
 
