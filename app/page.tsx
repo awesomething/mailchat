@@ -6,17 +6,18 @@ import LoadingDots from "@/components/LoadingDots";
 
 export default function Home() {
   const [message, setMessage] = useState<string>("");
-  const [history, setHistory] = useState<Message[]>([
+  const [history, setHistory] = useState<Message[]>([//9A. ASSIGN TWO ROLES: user and assitant
     {
       role: "assistant",
       content:
-        "How to get next day delivery from parcelmonkey?",
+        "How to get next day delivery from parcelmonkey?",//SET DEFAULT MESSAGE
     },
   ]);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleClick = () => {
+  const handleClick = () => { //8. FOR USER TO CLICK SEND BUTTON & SUBMIT PROMPTS
+//9B. CHECK IF THE MESSAGE EXIST, IF DOES, COMBINE IT WITH THE MESSAGE HISTORY WE ALREADY HAVE
     if (message == "") return;
     setHistory((oldHistory) => [
       ...oldHistory,
@@ -24,11 +25,12 @@ export default function Home() {
     ]);
     setMessage("");
     setLoading(true);
+//10A. CALL THE API, THEN SEND QUERY & HISTORY TO THIS API CALL and ..
     fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query: message, history: history }),
-    })
+    })//10B. RECEIVE THE RESPONSE
       .then(async (res) => {
         const r = await res.json();
         setHistory((oldHistory) => [...oldHistory, r]);
@@ -65,6 +67,7 @@ export default function Home() {
         <h1 className=" text-4xl text-transparent font-extralight bg-clip-text bg-gradient-to-r from-blue-800 to-sky-500">
           Mail chat
         </h1>
+        {/*1. chatbot form starts here */}
         <form
           className="rounded-2xl border-blue-700 border-opacity-5  border lg:w-3/4 flex-grow flex flex-col bg-[url('/images/bg.png')] bg-cover max-h-full overflow-clip"
           onSubmit={(e) => {
@@ -73,6 +76,7 @@ export default function Home() {
           }}
         >
           <div className="overflow-y-scroll flex flex-col gap-5 p-10 h-full">
+            {/*2. map the messages */}
             {history.map((message: Message, idx) => {
               const isLastMessage = idx === history.length - 1;
               switch (message.role) {
@@ -91,6 +95,7 @@ export default function Home() {
                         <p className="text-sm font-medium text-blue-500 mb-2">
                           AI assistant
                         </p>
+                        {/*3. MESSAGE FROM THE AI ASSISTANT */}
                         {message.content}
                         {message.links && (
                           <div className="mt-4 flex flex-col gap-2">
@@ -114,6 +119,7 @@ export default function Home() {
                       </div>
                     </div>
                   );
+                  {/*4. MESSAGE FROM THE USER */}
                 case "user":
                   return (
                     <div
@@ -129,6 +135,7 @@ export default function Home() {
                   );
               }
             })}
+            {/*5. THE LOADING STATE */}
             {loading && (
               <div ref={lastMessageRef} className="flex gap-2">
                 <img
@@ -145,7 +152,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* input area */}
+          {/*6. the input section*/}
           <div className="flex sticky bottom-0 w-full px-6 pb-6 h-24">
             <div className="w-full relative">
               <textarea
@@ -171,11 +178,13 @@ export default function Home() {
                 aria-label="Send"
                 disabled={!message || loading}
               >
+                {/*7. WHEN WE SEND THE MESSAGE, WE TRIGGER handleClick() FUNCTION ABOVE */}
                 <Send />
               </button>
             </div>
           </div>
         </form>
+         {/* chatbot FORM ends here */}
       </div>
     </main>
   );

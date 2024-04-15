@@ -1,9 +1,9 @@
 import { PineconeClient } from '@pinecone-database/pinecone';
-
+// 18A. TO GET OUR INDEX WORKING, WE NEED TO INITIALIZE & PROVIDE Pinecone Env Name, API Key & Index Name
 if (!process.env.PINECONE_ENVIRONMENT || !process.env.PINECONE_API_KEY) {
     throw new Error('Pinecone environment or api key vars missing');
 }
-
+//18B. SEE DOCS https://python.langchain.com/docs/integrations/vectorstores/pinecone
 async function initPinecone() {
     try {
         const pinecone = new PineconeClient();
